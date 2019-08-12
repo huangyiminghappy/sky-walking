@@ -36,9 +36,13 @@ import org.apache.skywalking.apm.util.StringUtil;
  */
 public class EasyLogger implements ILog {
 
-    private Class targetClass;
+    private String targetClass;
 
     public EasyLogger(Class targetClass) {
+        this.targetClass = targetClass.getSimpleName();
+    }
+
+    public EasyLogger(String targetClass) {
         this.targetClass = targetClass;
     }
 
@@ -66,8 +70,9 @@ public class EasyLogger implements ILog {
 
     String format(LogLevel level, String message, Throwable t) {
         return StringUtil.join(' ', level.name(),
-            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()),
-            targetClass.getSimpleName(),
+            new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS").format(new Date()),
+            Thread.currentThread().getName(),
+            targetClass,
             ": ",
             message,
             t == null ? "" : format(t)

@@ -24,8 +24,8 @@
 
 
 RELEASE_VERSION=${RELEASE_VERSION}
-TAG_NAME="v"${RELEASE_VERSION}
-PRODUCT_NAME="apache-skywalking-apm-incubating"
+TAG_NAME=v${RELEASE_VERSION}
+PRODUCT_NAME="apache-skywalking-apm"
 
 echo "Release version "${RELEASE_VERSION}
 echo "Source tag "${TAG_NAME}
@@ -43,7 +43,7 @@ PRODUCT_NAME=${PRODUCT_NAME}-${RELEASE_VERSION}
 rm -rf ${PRODUCT_NAME}
 mkdir ${PRODUCT_NAME}
 
-git clone https://github.com/apache/incubator-skywalking.git ./${PRODUCT_NAME}
+git clone https://github.com/apache/skywalking.git ./${PRODUCT_NAME}
 cd ${PRODUCT_NAME}
 
 TAG_EXIST=`git tag -l ${TAG_NAME} | wc -l`
@@ -64,6 +64,10 @@ tar czf ${PRODUCT_NAME}-src.tgz \
     --exclude ${PRODUCT_NAME}/.git/ --exclude ${PRODUCT_NAME}/.DS_Store/ \
     --exclude ${PRODUCT_NAME}/.github/ --exclude ${PRODUCT_NAME}/.gitignore/ \
     --exclude ${PRODUCT_NAME}/.gitmodules/ --exclude ${PRODUCT_NAME}/.travis.yml \
+    --exclude ${PRODUCT_NAME}/skywalking-ui/.git/ --exclude ${PRODUCT_NAME}/skywalking-ui/.DS_Store/ \
+    --exclude ${PRODUCT_NAME}/skywalking-ui/.github/ --exclude ${PRODUCT_NAME}/skywalking-ui/.gitignore/ \
+    --exclude ${PRODUCT_NAME}/skywalking-ui/.travis.yml/ \
+    --exclude ${PRODUCT_NAME}/apm-protocol/apm-network/src/main/proto/.git/ \
     ${PRODUCT_NAME}
 
 gpg --armor --detach-sig ${PRODUCT_NAME}-src.tgz
